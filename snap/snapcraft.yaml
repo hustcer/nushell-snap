@@ -1,8 +1,9 @@
 name: nushell
 base: core24
 license: MIT
-source-code: https://github.com/sed-i/nushell-snap
-issues: https://github.com/sed-i/nushell-snap/issues
+source-code: https://github.com/hustcer/nushell-snap
+issues: https://github.com/hustcer/nushell-snap/issues
+contact: https://github.com/hustcer/nushell-snap/issues
 adopt-info: nushell  # Note: snap version is set from tag
 
 title: Nushell
@@ -56,7 +57,6 @@ parts:
       - pkg-config
       - libssl-dev
       - build-essential
-      - musl-tools
       - linux-libc-dev
     rust-channel: stable
     rust-cargo-parameters:
@@ -77,13 +77,14 @@ parts:
       - pkg-config
       - libssl-dev
       - build-essential
-      - musl-tools
       - linux-libc-dev
     rust-channel: stable
     build-snaps: [rustup]
     build-attributes:
       - enable-patchelf
     override-build: |
+      # This is an anchor-only part used for YAML config reuse via &common.
+      # Each plugin part overrides this no-op with 'craftctl default'.
       echo "Common part; no-op"
 
   nu-plugin-stress-internals:
@@ -94,6 +95,8 @@ parts:
     override-build: |
       # Override the *common no-op
       craftctl default
+    prime:
+      - bin/nu_plugin_stress_internals
   nu-plugin-gstat:
     <<: *common
     after: [x-nu-plugin-common]
@@ -102,6 +105,8 @@ parts:
     override-build: |
       # Override the *common no-op
       craftctl default
+    prime:
+      - bin/nu_plugin_gstat
   nu-plugin-formats:
     <<: *common
     after: [x-nu-plugin-common]
@@ -110,6 +115,8 @@ parts:
     override-build: |
       # Override the *common no-op
       craftctl default
+    prime:
+      - bin/nu_plugin_formats
   nu-plugin-polars:
     <<: *common
     after: [x-nu-plugin-common]
@@ -118,6 +125,8 @@ parts:
     override-build: |
       # Override the *common no-op
       craftctl default
+    prime:
+      - bin/nu_plugin_polars
   nu-plugin-query:
     <<: *common
     after: [x-nu-plugin-common]
@@ -126,6 +135,8 @@ parts:
     override-build: |
       # Override the *common no-op
       craftctl default
+    prime:
+      - bin/nu_plugin_query
   nu-plugin-inc:
     <<: *common
     after: [x-nu-plugin-common]
@@ -134,6 +145,8 @@ parts:
     override-build: |
       # Override the *common no-op
       craftctl default
+    prime:
+      - bin/nu_plugin_inc
   nu-plugin-custom-values:
     <<: *common
     after: [x-nu-plugin-common]
@@ -142,3 +155,5 @@ parts:
     override-build: |
       # Override the *common no-op
       craftctl default
+    prime:
+      - bin/nu_plugin_custom_values
